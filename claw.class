@@ -1,0 +1,63 @@
+package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
+
+public class claw {
+    manualArmPower = gamepad1.right_trigger - gamepad1.left_trigger;
+        if (Math.abs(manualArmPower) > armManualDeadband) {
+            if (!manualMode) {
+                armLeft.setPower(0.0);
+                armRight.setPower(0.0);
+                armLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                armRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                manualMode = true;
+            }
+            armLeft.setPower(manualArmPower);
+            armRight.setPower(manualArmPower);
+        }
+        else {
+            if (manualMode) {
+                armLeft.setTargetPosition(armLeft.getCurrentPosition());
+                armRight.setTargetPosition(armRight.getCurrentPosition());
+                armLeft.setPower(1.0);
+                armRight.setPower(1.0);
+                armLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                armRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                manualMode = false;
+            }
+            
+            //preset buttons
+            if (gamepad1.a) {
+                armLeft.setTargetPosition(armHomePosition);
+                armRight.setTargetPosition(armHomePosition);
+                armLeft.setPower(1.0);
+                armRight.setPower(1.0);
+                armLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                armRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                wrist.setPosition(wristUpPosition);
+            }
+            else if (gamepad1.b) {
+                armLeft.setTargetPosition(armIntakePosition);
+                armRight.setTargetPosition(armIntakePosition);
+                armLeft.setPower(1.0);
+                armRight.setPower(1.0);
+                armLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                armRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                wrist.setPosition(wristDownPosition);
+            }
+            else if (gamepad1.y) {
+                armLeft.setTargetPosition(armScorePosition);
+                armRight.setTargetPosition(armScorePosition);
+                armLeft.setPower(1.0);
+                armRight.setPower(1.0);
+                armLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                armRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                wrist.setPosition(wristUpPosition);
+            }
+        }
